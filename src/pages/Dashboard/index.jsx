@@ -1,4 +1,4 @@
-function Dashboard() {
+const Dashboard = () => {
   return (
     <div className="page">
       <h1>Bienvenue sur votre tableau de bord</h1>

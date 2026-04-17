@@ -1,4 +1,4 @@
-function Connexion() {
+const Login = () => {
   return (
     <div className="page">
       <h1>Page de connexion</h1>
@@ -6,4 +6,4 @@ function Connexion() {
   )
 }
 
-export default Connexion
+export default Login

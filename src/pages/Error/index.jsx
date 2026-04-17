@@ -1,5 +1,5 @@
 
-function Error() {
+const Error = () => {
   return (
     <div>
       <h1 className="error-title">404</h1>
