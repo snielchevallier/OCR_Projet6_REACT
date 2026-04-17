@@ -1,7 +1,9 @@
 const Dashboard = () => {
   return (
-    <div className="page">
-      <h1>Bienvenue sur votre tableau de bord</h1>
+    <div className="min-h-screen flex items-center justify-center bg-blue">
+      <h1 className="text-3xl font-bold text-light-blue">
+        Bienvenue sur votre tableau de bord Tailwind v4 fonctionne 🚀
+      </h1>
     </div>
   )
 }
