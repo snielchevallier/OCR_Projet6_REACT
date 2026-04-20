@@ -1,14 +1,28 @@
+import { useEffect } from 'react';
 import bgLogin from '../../assets/bg-login.png'
 import Button from '../../components/Button'
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    // fake login (remplace par API plus tard)
+    const user = { name: "John" };
+    login(user);
+    navigate("/");
+  };
   return (
     <div className="bg-purple-light flex">
       <div className="w-2/5">
         <div className="w-sm mx-auto pt-20 pb-30">logo sportsee</div>
         <div className="bg-white rounded-xl p-8 w-sm mx-auto">
           <h1 className="text-[28px]/8 text-blue font-bold mb-4">Transformez <br />vos stats en résultats</h1>
-          <h2 className="text-[22px] text-black pb-5">
+          <h2 className="text-[22px] font-semibold text-black pb-5">
             Se connecter
           </h2>
           <form>
@@ -25,7 +39,7 @@ const Login = () => {
               <input className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue" id="password" type="password" placeholder="Mot de passe" />
             </div>
             <div className="mb-10">
-              <Button>Se connecter</Button>
+              <Button onClick={handleLogin}>Se connecter</Button>
             </div>
             <p className="text-sm text-black mt-4 mb-10">
               Mot de passe oublié ?
