@@ -1,7 +1,10 @@
 import avatar from '../assets/avatar.png'
 import pictoAcchievement from '../assets/picto-achievement.png'
+import { useAuth } from "../contexts/AuthContext";
 
 function DashUserInfos() {
+  const { userInfos } = useAuth();
+
   return (
     <div className="bg-linear-to-b from-white to-purple-light max-w-263 mx-auto flex items-center gap-4 py-8 px-8 mt-30 rounded-t-2xl">
         <div className="w-26 h-29.25 rounded-xl overflow-hidden">
@@ -12,7 +15,7 @@ function DashUserInfos() {
             />
         </div>
         <div >
-            <h1 className="text-2xl font-bold text-black">Clara Dupont</h1>
+            <h1 className="text-2xl font-bold text-black">{userInfos.profile.firstName} {userInfos.profile.lastName}</h1>
             <p className="text-grey">Membre depuis le 14 juin 2023</p>
         </div>
         <div  className="ml-auto text-grey">

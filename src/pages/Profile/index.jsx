@@ -1,7 +1,12 @@
 import avatar from '../../assets/avatar.png'
 import Stats from '../../components/stats'
+import { useContext, useState} from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Profile() {
+  const { userInfos } = useAuth();
+
+console.log("User Info in Profiled:", userInfos); // Debugging line
   return (
     <div className="min-h-screen justify-center bg-purple-light max-w-263 mx-auto py-8 my-10">
       <div className="flex gap-4">
@@ -15,7 +20,7 @@ function Profile() {
               />
             </div>
             <div >
-              <h1 className="text-2xl font-bold text-black">Clara Dupont</h1>
+              <h1 className="text-2xl font-bold text-black">{userInfos.profile.firstName} {userInfos.profile.lastName}</h1>
               <p className="text-grey">Membre depuis le 14 juin 2023</p>
             </div>
           </div>

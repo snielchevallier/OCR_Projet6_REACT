@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
+import { useState } from 'react';
 import bgLogin from '../../assets/bg-login.png'
 import Button from '../../components/Button'
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,13 +9,18 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
 
   const { login } = useAuth();
+  const {error} = useAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
     // fake login (remplace par API plus tard)
-    const user = { name: "John" };
-    login(user);
-    navigate("/");
+    e.preventDefault();
+    const success = login(email, password);
+    if (success) {
+      navigate("/");
+    }
   };
   return (
     <div className="bg-purple-light flex">
@@ -30,14 +36,29 @@ const Login = () => {
               <label className="block text-grey text-sm mb-2" htmlFor="email">
                 Adresse email
               </label>
-              <input className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue" id="email" type="email" placeholder="Adresse email" />
+              <input 
+              className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue" 
+              id="email" 
+              type="email" 
+              placeholder="Adresse email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="mb-10">
               <label className="block text-grey text-sm mb-2" htmlFor="password">
                 Mot de passe
               </label>
-              <input className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue" id="password" type="password" placeholder="Mot de passe" />
+              <input 
+              className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue" 
+              id="password" 
+              type="password" 
+              placeholder="Mot de passe" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="mb-10">
               <Button onClick={handleLogin}>Se connecter</Button>
             </div>
