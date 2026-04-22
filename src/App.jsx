@@ -41,7 +41,7 @@ const App = () => {
                         </ProtectedRoute>
                     } />
                     <Route path="*" element={
-                        <AuthLayout><Error /></AuthLayout>
+                        <MainLayout><Error /></MainLayout>
                     } />
                 </Routes>
             </Router>

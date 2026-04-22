@@ -1,9 +1,13 @@
+import DashUserInfos from "../../components/dashUserInfos"
+import DashLastPerfs from "../../components/dashLastPerfs"
+import DashWeek from "../../components/dashWeek"
+
 const Dashboard = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue">
-      <h1 className="text-3xl font-bold text-light-blue">
-        Bienvenue sur votre tableau de bord Tailwind v4 fonctionne 🚀
-      </h1>
+    <div className="min-h-screen justify-center mx-auto">
+      <DashUserInfos />
+      <DashLastPerfs />
+      <DashWeek />
     </div>
   )
 }
