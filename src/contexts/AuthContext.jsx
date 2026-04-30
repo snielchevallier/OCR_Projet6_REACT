@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import {connexionSuccess, connexionFail} from "../data/connexion";
 import {userInfo} from "../data/userInfo";
+import {userActivity} from "../data/userActivity";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [userInfos, setUserInfos] = useState(null);
+    const [userActivityData, setUserActivityData] = useState(null);
     const [token, setToken] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -15,9 +17,11 @@ export function AuthProvider({ children }) {
             setUser(JSON.parse(storedUser));
             setLoading(false);
             setUserInfos(userInfo);
+            setUserActivityData(userActivity);
             console.log("User Info in AuthProvider:", userInfo); // Debugging line
         }else{
             setUserInfos(null);
+            setUserActivityData(null);
             setLoading(false);
         }
     }, []);
@@ -48,7 +52,7 @@ export function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading, error, userInfos }}>
+        <AuthContext.Provider value={{ user, token, login, logout, loading, error, userInfos, userActivityData }}>
             {children}
         </AuthContext.Provider>
     );

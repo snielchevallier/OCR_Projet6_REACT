@@ -1,29 +1,32 @@
-import avatar from '../assets/avatar.png'
 import pictoAcchievement from '../assets/picto-achievement.png'
 import { useAuth } from "../contexts/AuthContext";
 
 function DashUserInfos() {
-  const { userInfos } = useAuth();
+  const { userInfos, userActivityData } = useAuth();
 
   return (
     <div className="bg-linear-to-b from-white to-purple-light max-w-263 mx-auto flex items-center gap-4 py-8 px-8 mt-30 rounded-t-2xl">
         <div className="w-26 h-29.25 rounded-xl overflow-hidden">
             <img
-            src={avatar}
-            alt="avatar Clara Dupont"
+            src={userInfos.profile.profilePicture}
+            alt={`avatar ${userInfos.profile.firstName} ${userInfos.profile.lastName}`}
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-120"
             />
         </div>
         <div >
             <h1 className="text-2xl font-bold text-black">{userInfos.profile.firstName} {userInfos.profile.lastName}</h1>
-            <p className="text-grey">Membre depuis le 14 juin 2023</p>
+            <p className="text-grey">Membre depuis le {Intl.DateTimeFormat("fr-FR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+            }).format(new Date(userInfos.profile.createdAt))}</p>
         </div>
         <div  className="ml-auto text-grey">
             Distance totale parcourue
         </div>
         <div className="bg-blue text-white text-2xl py-2 px-4 rounded-2xl w-45.75 h-22.5 flex items-center justify-center">
             <img src={pictoAcchievement} alt="picto achievement" className="w-8.5 h-8.5 inline-block mr-2"/>
-            312 km
+            {Math.floor(userInfos.statistics.totalDistance)} km
         </div>
     </div>
   )
