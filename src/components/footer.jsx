@@ -1,6 +1,6 @@
 
 import { NavLink } from 'react-router-dom'
-
+import logo from '../assets/logo.gif'
 function Footer() {
   return (
     <footer className="bg-white flex">
@@ -8,8 +8,8 @@ function Footer() {
         <div className="">&copy;Sportsee Tous droits réservés</div>
         <ul className="flex flex-row items-center bg-white rounded-full py-4 px-14 gap-8">
           <li><NavLink to="/">Conditions générales</NavLink></li>
-          <li><NavLink to="/profile">Contact</NavLink></li>
-          <li>logo Sportsee</li>
+          <li><NavLink to="/">Contact</NavLink></li>
+          <li><img src={logo} alt="logo Sportsee" className="w-5 h-5 rotate-180" /> </li>
         </ul>
       </nav>
     </footer>

@@ -4,7 +4,6 @@ import MainLayout from './Layouts/MainLayout'
 import AuthLayout from './Layouts/AuthLayout'
 
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./contexts/AuthContext";
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
