@@ -1,9 +1,9 @@
   import { NavLink } from 'react-router-dom'
 import { useDispatch } from "react-redux";
-import { logout } from "../store/slices/authSlice";
+import { logout } from "../../store/slices/authSlice";
 
-import logo from '../assets/logo.gif'
-import logoHeader from '../assets/logo_header.svg'
+import logo from '../../assets/logo.gif'
+import logoHeader from '../../assets/logo_header.svg'
 
 function Header() {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 
 import { NavLink } from 'react-router-dom'
-import logo from '../assets/logo.gif'
+import logo from '../../assets/logo.gif'
 function Footer() {
   return (
     <footer className="bg-white flex">

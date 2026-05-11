@@ -1,6 +1,6 @@
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 
-import WeekSelector from "./WeekSelector"
+import WeekSelector from "../CTAs/WeekSelector"
 
 import { useState } from "react";
 

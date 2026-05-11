@@ -1,46 +1,49 @@
-import { useEffect } from 'react';
 import { useState } from 'react';
 import bgLogin from '../../assets/bg-login.png'
-import Button from '../../components/Button'
+import Button from '../../components/CTAs/Button'
 import logo from '../../assets/logo.gif'
 import logoHeader from '../../assets/logo_header.svg'
 
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../store/slices/authSlice";
+import { setCredentials, setAuthError } from "../../store/slices/authSlice";
 import { setUserInfo } from "../../store/slices/userSlice";
 import { setActivity } from "../../store/slices/activitySlice";
 import { userInfo } from "../../data/userInfo";
 import { userActivity } from "../../data/userActivity";
 import { useNavigate } from "react-router-dom";
 
-
+import { useLoginMutation } from '../../queries/authQueries';
 const Login = () => {
 
   const dispatch = useDispatch();
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [loginMutation, { isLoading, isError,  error: apiError }] = useLoginMutation();
+  const loginError = error || apiError?.data?.message || apiError?.error;
   const handleLogin = async (e) => {
-    // fake login (remplace par API plus tard)
+    
     e.preventDefault();
-    // 1. Dispatcher l'action async login avec email/password
-    const result = await dispatch(login({ email, password }));
 
-    // 2. Vérifier si la connexion a réussi (login.fulfilled)
-    if (result.payload) {
-      // 3. Charger les données utilisateur dans Redux
-      dispatch(setUserInfo(userInfo));
+    try {
+      // Appeler l'API avec username et password
+      dispatch(setAuthError(null));
+      console.log("Attempting login with:", { username, password });
+      const result = await loginMutation({ username, password }).unwrap();
       
-      // 4. Charger les données d'activité dans Redux
+      // Stocker le token et le userId (dans Redux ou localStorage)
+      dispatch(setCredentials({ token: result.token, userId: result.userId }));
+      
+      // Charger les données utilisateur
+      dispatch(setUserInfo(userInfo));
       dispatch(setActivity(userActivity));
-      // 5. Naviguer vers le dashboard
+      
       navigate("/");
-    } else {
-      // Sinon, l'erreur s'affiche déjà via le state.auth.error
-      console.error("Login failed");
+    } catch (err) {
+       dispatch(setAuthError(err.data?.message || "Erreur de connexion"));
     }
   };
   return (
@@ -52,18 +55,18 @@ const Login = () => {
           <h2 className="text-[22px] font-semibold text-black pb-5">
             Se connecter
           </h2>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label className="block text-grey text-sm mb-2" htmlFor="email">
+              <label className="block text-grey text-sm mb-2" htmlFor="username">
                 Adresse email
               </label>
               <input
                 className="border-grey appearance-none border rounded-xl w-full py-4 px-3 text-gray-700 leading-tight focus:outline-blue"
-                id="email"
-                type="email"
+                id="username"
+                type="text"
                 placeholder="Adresse email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="mb-10">
@@ -79,9 +82,11 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {loginError && <p className="text-red-500 mb-4 text-center">{loginError}</p>}
             <div className="mb-10">
-              <Button onClick={handleLogin}>Se connecter</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Connexion..." : "Se connecter"}
+              </Button>
             </div>
             <p className="text-sm text-black mt-4 mb-10">
               Mot de passe oublié ?

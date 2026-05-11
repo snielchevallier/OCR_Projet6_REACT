@@ -10,7 +10,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo(state, action) {
-      console.log(action.payload.profile);
       state.profile = action.payload.profile;
       state.statistics = action.payload.statistics;
     },

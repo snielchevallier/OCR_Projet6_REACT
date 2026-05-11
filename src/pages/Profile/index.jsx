@@ -1,5 +1,5 @@
 import avatar from '../../assets/avatar.png'
-import Stats from '../../components/stats'
+import Stats from '../../components/Blocks/stats'
 import { useContext, useState} from "react";
 import { useSelector } from "react-redux";
 
@@ -7,7 +7,6 @@ function Profile() {
   const { profile } = useSelector((state) => state.user);
   const { sessions } = useSelector((state) => state.activity);
   const userActivityData = sessions || [];
-  console.log(userActivityData);
   // Calculer les statistiques depuis userActivityData
   const nbSessions = userActivityData?.length || 0;
   const totalDistance = userActivityData?.reduce((acc, session) => acc + session.distance, 0).toFixed(1) || 0;

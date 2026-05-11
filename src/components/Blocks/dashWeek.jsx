@@ -1,4 +1,4 @@
-import ChartWeek from "./ChatWeek"
+import ChartWeek from "../Charts/Week";
 function DashWeek() {
     return (
         <div className="bg-purple-light max-w-263 mx-auto py-8 my-10">

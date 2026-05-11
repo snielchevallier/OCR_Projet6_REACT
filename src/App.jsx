@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
-import MainLayout from './Layouts/MainLayout'
-import AuthLayout from './Layouts/AuthLayout'
+import MainLayout from './layouts/MainLayout'
+import AuthLayout from './layouts/AuthLayout'
 
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./layouts/ProtectedRoute";
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'

@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-import WeekSelector from "./WeekSelector"
+import WeekSelector from "../CTAs/WeekSelector"
 
 
 function ChartDist() {

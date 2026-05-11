@@ -1,4 +1,4 @@
-import pictoAcchievement from '../assets/picto-achievement.png'
+import pictoAcchievement from '../../assets/picto-achievement.png'
 import { useSelector } from "react-redux";
 
 function DashUserInfos() {

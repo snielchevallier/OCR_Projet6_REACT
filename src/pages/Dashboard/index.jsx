@@ -1,6 +1,6 @@
-import DashUserInfos from "../../components/dashUserInfos"
-import DashLastPerfs from "../../components/dashLastPerfs"
-import DashWeek from "../../components/dashWeek"
+import DashUserInfos from "../../components/Blocks/dashUserInfos"
+import DashLastPerfs from "../../components/Blocks/dashLastPerfs"
+import DashWeek from "../../components/Blocks/dashWeek"
 
 const Dashboard = () => {
   return (
