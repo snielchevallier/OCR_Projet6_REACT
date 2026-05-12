@@ -13,6 +13,9 @@ import { userActivity } from "../../data/userActivity";
 import { useNavigate } from "react-router-dom";
 
 import { useLoginMutation } from '../../queries/authQueries';
+import { useLazyGetUserInfoQuery } from '../../queries/userQueries';
+import { useLazyGetUserActivityQuery } from '../../queries/activityQueries';
+
 const Login = () => {
 
   const dispatch = useDispatch();
@@ -23,6 +26,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const [loginMutation, { isLoading, isError,  error: apiError }] = useLoginMutation();
+  const [fetchUserInfo] = useLazyGetUserInfoQuery();
+  const [fetchUserActivity] = useLazyGetUserActivityQuery();
   const loginError = error || apiError?.data?.message || apiError?.error;
   const handleLogin = async (e) => {
     
@@ -31,14 +36,17 @@ const Login = () => {
     try {
       // Appeler l'API avec username et password
       dispatch(setAuthError(null));
-      console.log("Attempting login with:", { username, password });
       const result = await loginMutation({ username, password }).unwrap();
       
       // Stocker le token et le userId (dans Redux ou localStorage)
       dispatch(setCredentials({ token: result.token, userId: result.userId }));
-      
+
       // Charger les données utilisateur
-      dispatch(setUserInfo(userInfo));
+      const userInfoResult = await fetchUserInfo().unwrap();
+      dispatch(setUserInfo(userInfoResult));
+      //dispatch(setUserInfo(userInfo));
+      const userActivityResult = await fetchUserActivity().unwrap();
+
       dispatch(setActivity(userActivity));
       
       navigate("/");
