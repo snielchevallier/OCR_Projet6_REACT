@@ -46,8 +46,8 @@ const Login = () => {
       dispatch(setUserInfo(userInfoResult));
       //dispatch(setUserInfo(userInfo));
       const userActivityResult = await fetchUserActivity().unwrap();
-
-      dispatch(setActivity(userActivity));
+      dispatch(setActivity(userActivityResult));
+      //dispatch(setActivity(userActivity));
       
       navigate("/");
     } catch (err) {

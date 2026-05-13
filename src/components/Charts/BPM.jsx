@@ -1,23 +1,86 @@
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
-
+import { formatDateLocal, getMonday } from '../../utils/date';
 import WeekSelector from "../CTAs/WeekSelector"
 
-import { useState } from "react";
-
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 
 
 function ChartBPM() {
-    const dataBPM = [
-                    { name: 'Lun', Min: 140, Max: 180, Average: 160 },
-                    { name: 'Mar', Min: 130, Max: 170, Average: 150 },
-                    { name: 'Mer', Min: 120, Max: 160, Average: 140 },
-                    { name: 'Jeu', Min: 135, Max: 175, Average: 155 },
-                    { name: 'Ven', Min: 145, Max: 185, Average: 165 },
-                    { name: 'Sam', Min: 125, Max: 165, Average: 145 },
-                    { name: 'Dim', Min: 130, Max: 170, Average: 150 },
-                ];
-const [activeIndex, setActiveIndex] = useState(null);
 
+    //initialisation des dates de debut et de fin de semaine
+    
+    const initialWeekStart = getMonday(new Date());
+    const initialWeekEnd = new Date(initialWeekStart);
+    initialWeekEnd.setDate(initialWeekEnd.getDate() + 6);
+
+    const [weekStart, setWeekStart] = useState(initialWeekStart);
+    const [weekEnd, setWeekEnd] = useState(initialWeekEnd);
+
+    const [range, setRange] = useState({ weekStart, weekEnd });
+    const [dataBPM, setDataBPM] = useState([]);
+    console.log('Initial range:', range);
+
+    /*const dataBPM = [
+        { name: 'Lun', Min: 140, Max: 180, Average: 160 },
+        { name: 'Mar', Min: 130, Max: 170, Average: 150 },
+        { name: 'Mer', Min: 120, Max: 160, Average: 140 },
+        { name: 'Jeu', Min: 135, Max: 175, Average: 155 },
+        { name: 'Ven', Min: 145, Max: 185, Average: 165 },
+        { name: 'Sam', Min: 125, Max: 165, Average: 145 },
+        { name: 'Dim', Min: 130, Max: 170, Average: 150 },
+    ];*/
+    const { sessions } = useSelector((state) => state.activity);
+
+
+    const handleWeekChange = useCallback((weekStart, weekEnd) => {
+        setWeekStart(weekStart);
+        setWeekEnd(weekEnd);
+        setRange({ weekStart, weekEnd });
+    }, []);
+
+    useEffect(() => {
+        if (range) {
+            setDataBPM(buildDataBPM(sessions, range.weekStart, range.weekEnd));
+        }
+    }, [range]);
+
+    const joursFR = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+
+    function buildDataBPM(data, start, end) {
+        const result = [];
+        const endDate = new Date(end);
+        // Indexation rapide des activités par date
+        const map = new Map(
+            data.map(item => [item.date, item])
+        );
+
+        // Boucle du début à la fin
+        for (
+            let d = new Date(start);
+            d <= endDate;
+            d.setDate(d.getDate() + 1)
+        ) {
+            const dateStr = formatDateLocal(d);
+            console.log('Processing date:', dateStr);
+            const activity = map.get(dateStr);
+
+            result.push({
+                name: joursFR[(d.getDay() + 6) % 7],
+                Min: activity?.heartRate?.min ?? 0,
+                Max: activity?.heartRate?.max ?? 0,
+                Average: activity?.heartRate?.average ?? 0,
+            });
+        }
+        console.log('Built BPM data:', result);
+        return result;
+    }
+    /*
+        const dataBPM = buildDataBPM(sessions, range.weekStart, range.weekEnd);
+    
+        console.log(dataBPM);
+    */
+    const [activeIndex, setActiveIndex] = useState(null);
     const renderLegend = (props) => {
         const { payload } = props;
         const orderedNames = ['Min BPM', 'Max BPM', 'Moy BPM'];
@@ -45,7 +108,7 @@ const [activeIndex, setActiveIndex] = useState(null);
         <>
             <div className="flex justify-between gap-4">
                 <h2 className="text-xl text-red font-semibold">163 BPM</h2>
-                <WeekSelector />
+                <WeekSelector weekStart={weekStart} weekEnd={weekEnd} onChange={handleWeekChange}/>
             </div>
             <div className="text-xs text-grey mt-2 pb-2">
                 Fréquence cardiaque moyenne
@@ -59,27 +122,27 @@ const [activeIndex, setActiveIndex] = useState(null);
 
                 onMouseMove={(state) => {
                     if (state?.activeTooltipIndex !== undefined) {
-                    setActiveIndex(state.activeTooltipIndex);
+                        setActiveIndex(state.activeTooltipIndex);
                     }
                 }}
                 onMouseLeave={() => setActiveIndex(null)}
-                >
+            >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" dy={10} />
                 <YAxis tickLine={false} width={40} />
-                
-                <Legend content={renderLegend} align="left" wrapperStyle={{paddingTop: 10}} />
-                <Bar dataKey="Min" name="Min BPM" fill="#FCC1B6" barSize={14} radius={[7, 7, 7, 7]} legendType="circle"/>
-                <Bar dataKey="Max" name="Max BPM" fill="#F4320B" barSize={14} radius={[7, 7, 7, 7]} legendType="circle"/>
-                
-                
-                
-                <Line dataKey="Average" name="Moy BPM" type="monotone" 
-                stroke={activeIndex !== null ? "#0B23F4" : "#F2F3FF"}
-                strokeWidth={activeIndex !== null ? 3 : 2}
-                legendType="line"
+
+                <Legend content={renderLegend} align="left" wrapperStyle={{ paddingTop: 10 }} />
+                <Bar dataKey="Min" name="Min BPM" fill="#FCC1B6" barSize={14} radius={[7, 7, 7, 7]} legendType="circle" />
+                <Bar dataKey="Max" name="Max BPM" fill="#F4320B" barSize={14} radius={[7, 7, 7, 7]} legendType="circle" />
+
+
+
+                <Line dataKey="Average" name="Moy BPM" type="monotone"
+                    stroke={activeIndex !== null ? "#0B23F4" : "#F2F3FF"}
+                    strokeWidth={activeIndex !== null ? 3 : 2}
+                    legendType="line"
                 />
-                
+
             </ComposedChart>
         </>
     );

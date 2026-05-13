@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-import WeekSelector from "../CTAs/WeekSelector"
+import MonthSelector from "../CTAs/MonthSelector"
 
 
 function ChartDist() {
@@ -36,7 +36,7 @@ function ChartDist() {
         <>
             <div className="flex justify-between gap-4">
                 <h2 className="text-xl text-blue font-semibold">18km de moyenne</h2>
-                <WeekSelector />
+                <MonthSelector initialDate={new Date()} />
             </div>
             <div className="text-xs text-grey mt-2 pb-2">
                 Total des kilomètres 4 dernières semaines

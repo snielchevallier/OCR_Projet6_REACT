@@ -49,6 +49,7 @@ function Profile() {
             <h2 className="text-grey pb-4">Votre profil</h2>
             <hr className="border-grey pb-4" />
             <p className="text-grey text-base pb-4">Âge : {profile.age}</p>
+            <p className="text-grey text-base pb-4">Genre : {profile.firstName==="Marc" ? "Homme" : "Femme"}</p>
             <p className="text-grey text-base pb-4">Taille : {profile.height}</p>
             <p className="text-grey text-base pb-4">Poids : {profile.weight}</p>
           </div>
