@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { formatDate, formatShort } from '../../utils/date';
 
 function WeekSelector({ weekStart, weekEnd, onChange }) {
-    
+
 
     const addDays = (date, days) => {
         const d = new Date(date);
@@ -9,15 +10,11 @@ function WeekSelector({ weekStart, weekEnd, onChange }) {
         return d;
     };
 
-    
+
 
     const isSameMonth = weekStart.getMonth() === weekEnd.getMonth();
 
-    const formatDate = (date) =>
-        date.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
-
-    const formatShort = (date) =>
-        date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    
 
     const label = `${formatShort(weekStart)} – ${formatShort(weekEnd)}`;
 
@@ -25,15 +22,15 @@ function WeekSelector({ weekStart, weekEnd, onChange }) {
     const goToNext = () => setWeekStart((prev) => addDays(prev, 7));
 */
     const goToPrev = () => {
-       const newStart = addDays(weekStart, -7);
-    const newEnd = addDays(newStart, 6);
-    onChange?.(newStart, newEnd);
+        const newStart = addDays(weekStart, -7);
+        const newEnd = addDays(newStart, 6);
+        onChange?.(newStart, newEnd);
     };
 
     const goToNext = () => {
         const newStart = addDays(weekStart, 7);
-    const newEnd = addDays(newStart, 6);
-    onChange?.(newStart, newEnd);
+        const newEnd = addDays(newStart, 6);
+        onChange?.(newStart, newEnd);
     };
 
 

@@ -9,17 +9,16 @@ import { useSelector } from "react-redux";
 function ChartBPM() {
 
     //initialisation des dates de debut et de fin de semaine
-    
+
     const initialWeekStart = getMonday(new Date());
     const initialWeekEnd = new Date(initialWeekStart);
     initialWeekEnd.setDate(initialWeekEnd.getDate() + 6);
 
     const [weekStart, setWeekStart] = useState(initialWeekStart);
     const [weekEnd, setWeekEnd] = useState(initialWeekEnd);
-
     const [range, setRange] = useState({ weekStart, weekEnd });
     const [dataBPM, setDataBPM] = useState([]);
-    console.log('Initial range:', range);
+    const [averageBPM, setAverageBPM] = useState(0);
 
     /*const dataBPM = [
         { name: 'Lun', Min: 140, Max: 180, Average: 160 },
@@ -41,7 +40,10 @@ function ChartBPM() {
 
     useEffect(() => {
         if (range) {
-            setDataBPM(buildDataBPM(sessions, range.weekStart, range.weekEnd));
+            const tmpData = buildDataBPM(sessions, range.weekStart, range.weekEnd);
+            setDataBPM(tmpData);
+            const DataBPMFiltered = tmpData.filter(item => item.Average !== 0);
+            setAverageBPM(Math.round(DataBPMFiltered.reduce((acc, item) => acc + item.Average, 0) / DataBPMFiltered.length));
         }
     }, [range]);
 
@@ -62,9 +64,8 @@ function ChartBPM() {
             d.setDate(d.getDate() + 1)
         ) {
             const dateStr = formatDateLocal(d);
-            console.log('Processing date:', dateStr);
             const activity = map.get(dateStr);
-
+            
             result.push({
                 name: joursFR[(d.getDay() + 6) % 7],
                 Min: activity?.heartRate?.min ?? 0,
@@ -72,14 +73,8 @@ function ChartBPM() {
                 Average: activity?.heartRate?.average ?? 0,
             });
         }
-        console.log('Built BPM data:', result);
         return result;
     }
-    /*
-        const dataBPM = buildDataBPM(sessions, range.weekStart, range.weekEnd);
-    
-        console.log(dataBPM);
-    */
     const [activeIndex, setActiveIndex] = useState(null);
     const renderLegend = (props) => {
         const { payload } = props;
@@ -107,8 +102,8 @@ function ChartBPM() {
     return (
         <>
             <div className="flex justify-between gap-4">
-                <h2 className="text-xl text-red font-semibold">163 BPM</h2>
-                <WeekSelector weekStart={weekStart} weekEnd={weekEnd} onChange={handleWeekChange}/>
+                <h2 className="text-xl text-red font-semibold">{averageBPM} BPM</h2>
+                <WeekSelector weekStart={weekStart} weekEnd={weekEnd} onChange={handleWeekChange} />
             </div>
             <div className="text-xs text-grey mt-2 pb-2">
                 Fréquence cardiaque moyenne

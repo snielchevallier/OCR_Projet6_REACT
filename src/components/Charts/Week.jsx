@@ -1,11 +1,10 @@
-
-
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
-function ChartWeek() {
+function ChartWeek({ done, todo }) {
+
     const data = [
-        { name: '4 réalisées', value: 4 },
-        { name: '2 restantes', value: 2 }
+        { name: `${done} réalisées`, value: done },
+        { name: `${todo} restantes`, value: todo }
     ];
 
     const COLORS = ['#0B23F4', '#B6BDFC'];
@@ -34,7 +33,7 @@ function ChartWeek() {
     return (
         <>
             <div className="flex justify-between gap-4">
-                <h2 className="text-3xl text-blue font-semibold">x4 <span className="text-base text-light-blue">sur objectif de 6</span></h2>
+                <h2 className="text-3xl text-blue font-semibold">x{done} <span className="text-base text-light-blue">sur objectif de {done + todo}</span></h2>
             </div>
             <div className="text-sm text-grey mt-2 pb-2">
                 Courses hebdomadaire réalisées

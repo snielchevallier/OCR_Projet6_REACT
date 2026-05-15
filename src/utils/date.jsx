@@ -6,6 +6,14 @@ export function formatDateLocal(date) {
   return `${year}-${month}-${day}`;
 }
 
+export function formatDateFrench(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${day}/${month}/${year}`;
+}
+
 export function getMonday(date) {
         const d = new Date(date);
         const day = d.getDay();
@@ -14,3 +22,11 @@ export function getMonday(date) {
         d.setHours(0, 0, 0, 0);
         return d;
     };
+
+    export function formatDate(date) {
+        return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+    }
+
+    export function formatShort(date) {
+        return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    }
