@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8000',
@@ -16,7 +16,16 @@ export const activityApi = createApi({
   baseQuery: baseQuery,
   endpoints: (build) => ({
     getUserActivity: build.query({
-      query: () => '/api/user-activity?startWeek=2025-01-01T10:30:00.000Z&endWeek=2030-01-01T10:30:00.000Z',
+      queryFn: async (arg, { getState }, _extraOptions, fetchWithBase) => {
+        const state = getState();
+        const now = new Date().toISOString();
+        const inscriptionDate = new Date(state.user.profile.createdAt).toISOString();
+        const result = await fetchWithBase( 
+          `/api/user-activity?startWeek=${inscriptionDate}&endWeek=${now}`
+        );
+
+        return result.error ? { error: result.error } : { data: result.data };
+      },
     }),
   }),
 });
