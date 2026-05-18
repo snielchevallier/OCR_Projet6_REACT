@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 import { useState, useEffect, useCallback, use } from "react";
 import { useSelector } from "react-redux";
@@ -80,18 +80,19 @@ function ChartDist() {
     return (
         <>
             <div className="flex justify-between gap-4">
-                <h2 className="text-xl text-blue font-semibold">{Math.round(dataDistance.reduce((sum, item) => sum + item.Km, 0)/4 )}km de moyenne</h2>
+                <h2 className="text-xl text-blue font-semibold">{Math.round(dataDistance.reduce((sum, item) => sum + item.Km, 0)/4 ) ? Math.round(dataDistance.reduce((sum, item) => sum + item.Km, 0)/4 ) : 0}km de moyenne</h2>
                 <MonthSelector weekStart={dataDistance[0]?.startDate ?? weekStart} weekEnd={dataDistance[3]?.endDate ?? weekEnd} onChange={handleWeekChange} />
             </div>
             <div className="text-xs text-grey mt-2 pb-2">
                 Total des kilomètres 4 dernières semaines
             </div>
-            <BarChart
-                width={390}
-                height={307}
-                align="left"
-                margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
-                data={dataDistance}
+            <ResponsiveContainer width="100%" height={307}>
+                <BarChart
+                    width={390}
+                    height={307}
+                    align="left"
+                    margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                    data={dataDistance}
             >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" dy={10} />
@@ -104,6 +105,7 @@ function ChartDist() {
 
                 <Bar dataKey="Km" fill="#7987FF" activeBar={{ fill: "#0B23F4" }} barSize={14} radius={[7, 7, 7, 7]} />
             </BarChart>
+            </ResponsiveContainer>
         </>
     );
 }

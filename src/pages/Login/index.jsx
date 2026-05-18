@@ -102,9 +102,9 @@ const Login = () => {
           </form>
         </div>
       </div>
-      <div className="w-3/5 relative">
-        <img src={bgLogin} alt="Background" className="w-full aspect-auto" />
-        <div className="absolute bottom-6 right-6 bg-white py-5 px-6 rounded-full shadow-lg">
+      <div className="w-3/5 flex ">
+        <img src={bgLogin} alt="Background" className="w-full aspect-auto " />
+        <div className="absolute bottom-16 right-6 bg-white py-5 px-6 rounded-full shadow-lg">
           <p className="text-sm text-blue">
             Analysez vos performances en un clin d’œil,<br />
             suivez vos progrès et atteignez vos objectifs.

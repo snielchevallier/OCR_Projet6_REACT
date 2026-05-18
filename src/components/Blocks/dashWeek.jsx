@@ -24,23 +24,26 @@ const totalDuration = sessionsThisWeek.reduce((sum, session) => sum + session.du
 //Distance
 const totalDistance = sessionsThisWeek.reduce((sum, session) => sum + session.distance, 0);
     return (
-        <div className="bg-purple-light max-w-263 mx-auto py-8 my-10">
+        <div className="bg-purple-light max-w-263 mx-auto py-8 mt-10 px-8">
             <h2 className="text-2xl text-black pb-4">Cette semaine</h2>
             <p className="text-black pb-4">Du {formatDateFrench(initialDateStart)} au {formatDateFrench(initialDateEnd)}</p>
-            <div className="grid grid-flow-col grid-rows-3 gap-4">
-                <div className="row-span-3 bg-white rounded-2xl w-[445px] py-4 px-8">
+            <div className="flex space-between gap-4 ">
+                <div className="bg-white w-[445px] rounded-2xl py-4 px-6">
                     <ChartWeek done={done} todo={todo} />
                 </div>
-                <div className=" bg-white rounded-2xl  w-[583px] py-4 px-8">
-                    <p className="text-grey pb-2">Durée d'activité</p>
-                    <p className="text-blue text-2xl">{totalDuration} <span className="text-light-blue text-base">minutes</span></p>
-                </div>
-                <div className=" bg-white rounded-2xl w-[583px] py-4 px-8">
-                    <p className="text-grey pb-2">Distance</p>
-                    <p className="text-red text-2xl">{totalDistance} <span className="text-light-red text-base">kilomètres</span></p>
+                <div className="w-[583px] gap-4 ml-4">
+                    <div className="bg-white w-full rounded-2xl py-4 px-8">
+                        <p className="text-grey pb-2">Durée d'activité</p>
+                        <p className="text-blue text-2xl">{totalDuration} <span className="text-light-blue text-base">minutes</span></p>
+                    </div>
+                    <div className=" bg-white w-full rounded-2xl py-4 px-8 mt-4">
+                        <p className="text-grey pb-2">Distance</p>
+                        <p className="text-red text-2xl">{totalDistance} <span className="text-light-red text-base">kilomètres</span></p>
+                    </div>
                 </div>
             </div>
-        </div>
+            
+         </div>
     )
 }
 

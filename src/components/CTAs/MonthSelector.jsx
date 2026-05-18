@@ -39,7 +39,7 @@ function MonthSelector({ weekStart, weekEnd, onChange }) {
 
 
     return (
-        <div className="flex items-center gap-4 font-normal">
+        <div className="flex items-center gap-2 font-normal">
             <span
                 onClick={goToPrev}
                 className="w-6 h-6 flex items-center justify-center border border-black rounded-full cursor-pointer hover:bg-blue hover:text-white transition-colors"

@@ -25,9 +25,9 @@ function Profile() {
 
   
   return (
-    <div className="min-h-screen justify-center bg-purple-light max-w-263 mx-auto py-8 my-10">
-      <div className="flex gap-4">
-        <div className="p-4 w-1/2">
+    <div className="min-h-screen justify-center bg-purple-light max-w-263 mx-auto py-8 px-8 my-10">
+      <div className="flex">
+        <div className="py-4 pl-0 pr-4 w-1/2">
           <div className=" bg-white rounded-2xl py-4 px-8 flex items-center gap-4">
             <div className="w-26 h-29.25 rounded-xl overflow-hidden">
               <img

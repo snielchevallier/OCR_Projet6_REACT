@@ -1,4 +1,4 @@
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import { formatDateLocal, getMonday } from '../../utils/date';
 import WeekSelector from "../CTAs/WeekSelector"
 
@@ -102,18 +102,19 @@ function ChartBPM() {
     return (
         <>
             <div className="flex justify-between gap-4">
-                <h2 className="text-xl text-red font-semibold">{averageBPM} BPM</h2>
+                <h2 className="text-xl text-red font-semibold">{averageBPM ? averageBPM : 0} BPM</h2>
                 <WeekSelector weekStart={weekStart} weekEnd={weekEnd} onChange={handleWeekChange} />
             </div>
             <div className="text-xs text-grey mt-2 pb-2">
                 Fréquence cardiaque moyenne
             </div>
-            <ComposedChart
-                width={510}
-                height={307}
-                align="left"
-                margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
-                data={dataBPM}
+            <ResponsiveContainer width="100%" height={307}>
+                <ComposedChart
+                    width={510}
+                    height={307}
+                    align="left"
+                    margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                    data={dataBPM}
 
                 onMouseMove={(state) => {
                     if (state?.activeTooltipIndex !== undefined) {
@@ -139,6 +140,7 @@ function ChartBPM() {
                 />
 
             </ComposedChart>
+            </ResponsiveContainer>
         </>
     );
 }
