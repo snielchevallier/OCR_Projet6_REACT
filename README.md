@@ -11,6 +11,9 @@
 # Installer les dépendances
 npm install
 ```
+## Configuration
+- renommer le fichier .env.example en .env
+- modifier la variable VITE_API_URL avec votre URL de l'api
 
 ## Démarrage
 

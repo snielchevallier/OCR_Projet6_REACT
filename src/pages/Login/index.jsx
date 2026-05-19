@@ -25,33 +25,41 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [loginMutation, { isLoading, isError,  error: apiError }] = useLoginMutation();
-  const [fetchUserInfo] = useLazyGetUserInfoQuery();
-  const [fetchUserActivity] = useLazyGetUserActivityQuery();
+  const [loginMutation, { isLoading, isError, error: apiError }] = useLoginMutation();
+  const [fetchUserInfo, { isLoading: isLoadingUserInfo, isError: isErrorUserInfo }] = useLazyGetUserInfoQuery();
+  const [fetchUserActivity, { isLoading: isLoadingActivity, isError: isErrorActivity }] = useLazyGetUserActivityQuery();
   const loginError = error || apiError?.data?.message || apiError?.error;
+  const isGlobalLoading = isLoading || isLoadingUserInfo || isLoadingActivity;
   const handleLogin = async (e) => {
-    
+
     e.preventDefault();
 
     try {
       // Appeler l'API avec username et password
       dispatch(setAuthError(null));
       const result = await loginMutation({ username, password }).unwrap();
-      
-      // Stocker le token et le userId (dans Redux ou localStorage)
+
+      // Stocker le token et le userId dans le store
       dispatch(setCredentials({ token: result.token, userId: result.userId }));
 
       // Charger les données utilisateur
       const userInfoResult = await fetchUserInfo().unwrap();
       dispatch(setUserInfo(userInfoResult));
-      //dispatch(setUserInfo(userInfo));
+
       const userActivityResult = await fetchUserActivity().unwrap();
-      dispatch(setActivity(userActivityResult));
-      //dispatch(setActivity(userActivity));
       
+      dispatch(setActivity(userActivityResult));
       navigate("/");
     } catch (err) {
-       dispatch(setAuthError(err.data?.message || "Erreur de connexion"));
+      if (err?.status === 401) {
+        dispatch(setAuthError("Identifiants incorrects"));
+      } else if (isErrorUserInfo) {
+        dispatch(setAuthError("Impossible de charger votre profil"));
+      } else if (isErrorActivity) {
+        dispatch(setAuthError("Impossible de charger votre activité"));
+      } else {
+        dispatch(setAuthError(err.data?.message || "Erreur de connexion"));
+      }
     }
   };
   return (
@@ -92,8 +100,8 @@ const Login = () => {
             </div>
             {loginError && <p className="text-red-500 mb-4 text-center">{loginError}</p>}
             <div className="mb-10">
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Connexion..." : "Se connecter"}
+              <Button type="submit" disabled={isGlobalLoading}>
+                {isGlobalLoading ? "Connexion..." : "Se connecter"}
               </Button>
             </div>
             <p className="text-sm text-black mt-4 mb-10">
